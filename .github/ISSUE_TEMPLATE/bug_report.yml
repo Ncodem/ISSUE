@@ -1,0 +1,142 @@
+name: Rapport de bug
+description: Signaler un bug ou comportement anormal pendant la bêta.
+title: "[BUG] "
+labels:
+  - à vérifier
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de vérifier rapidement que le bug n'a pas déjà été signalé avant d'ouvrir une nouvelle issue.
+
+        Pour une faille critique ou un exploit, ne détaillez pas publiquement la méthode complète. Créez une issue avec un titre clair, puis contactez le staff en privé.
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type de bug
+      description: Choisissez la catégorie la plus proche.
+      options:
+        - BUG — bug général
+        - CRASH — crash ou déconnexion
+        - AFFICHAGE — interface ou problème visuel
+        - JOB — métier ou service
+        - INVENTAIRE — items ou inventaire
+        - ARGENT — banque, cash, salaire, société
+        - VÉHICULE — véhicule, garage, fourrière
+        - MAPPING — map, porte, collision, intérieur
+        - PERFORMANCE — FPS, lag, freeze
+        - AUDIO — voix, radio, son
+        - RP — incohérence roleplay
+        - CRITIQUE — duplication, sécurité, faille grave
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Résumé du bug
+      description: Décrivez rapidement le problème rencontré.
+      placeholder: "Exemple : Quand j'ouvre l'inventaire et que j'essaie d'utiliser une bouteille d'eau, rien ne se passe."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Étapes pour reproduire le bug
+      description: Expliquez précisément comment refaire le bug.
+      value: |
+        1.
+        2.
+        3.
+        4.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Résultat attendu
+      description: Expliquez ce qui aurait normalement dû se passer.
+      placeholder: "Exemple : Le personnage aurait dû boire la bouteille d'eau et l'item aurait dû disparaître ou diminuer."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Résultat obtenu
+      description: Expliquez ce qui s'est réellement passé.
+      placeholder: "Exemple : Aucune animation ne se lance, la soif ne remonte pas et l'item reste dans l'inventaire."
+    validations:
+      required: true
+
+  - type: input
+    id: date
+    attributes:
+      label: Date et heure du bug
+      placeholder: "Exemple : 23 mai 2026 vers 21h30"
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Lieu en jeu
+      description: Indiquez où vous étiez si c'est utile.
+      placeholder: "Exemple : Centre-ville, devant la banque principale."
+
+  - type: input
+    id: character
+    attributes:
+      label: Personnage utilisé
+      description: Nom RP ou identifiant joueur si vous en avez un.
+      placeholder: "Exemple : Nicolas Carter"
+
+  - type: dropdown
+    id: reproducible
+    attributes:
+      label: Le bug est-il reproductible ?
+      options:
+        - Oui, à chaque fois
+        - Oui, mais pas toujours
+        - Non, c'est arrivé une seule fois
+        - Je ne sais pas
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Gravité du bug
+      options:
+        - Mineur — gênant mais pas bloquant
+        - Moyen — perturbe le gameplay
+        - Important — bloque une fonctionnalité
+        - Critique — crash, perte d'argent, duplication ou faille importante
+    validations:
+      required: true
+
+  - type: textarea
+    id: media
+    attributes:
+      label: Captures d'écran ou vidéo
+      description: Ajoutez vos captures, vidéos, messages d'erreur, logs ou liens utiles. Vous pouvez glisser-déposer les images directement ici.
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Informations complémentaires
+      description: Ajoutez tout ce qui peut aider au debug.
+      placeholder: "Message d'erreur, item utilisé, véhicule concerné, job concerné, nombre de joueurs présents, FPS approximatifs, autre joueur témoin..."
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Vérifications
+      options:
+        - label: J'ai vérifié rapidement que ce bug n'était pas déjà signalé.
+          required: true
+        - label: Je n'ai pas publié publiquement de méthode complète permettant d'exploiter une faille critique.
+          required: true
