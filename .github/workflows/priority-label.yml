@@ -1,0 +1,68 @@
+name: Auto-label priorité
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+
+jobs:
+  apply-priority:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Appliquer le label de priorité depuis le formulaire
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.issue.body || "";
+
+            // Récupère la valeur saisie sous la section "Priorité" du formulaire.
+            const m = body.match(/###[ \t]+Priorité[ \t]*\r?\n+[ \t]*(.+)/);
+            if (!m) {
+              core.info("Aucune section Priorité dans l'issue — rien à faire.");
+              return;
+            }
+
+            const choice = m[1].trim().toLowerCase();
+            if (!choice || choice === "_no response_" || choice === "_aucune réponse_") {
+              core.info("Priorité non renseignée — rien à faire.");
+              return;
+            }
+
+            // "très basse" est testé avant "basse" (préfixe).
+            const map = [
+              ["très basse", "priorité: très basse"],
+              ["tres basse", "priorité: très basse"],
+              ["critique", "priorité: critique"],
+              ["haute", "priorité: haute"],
+              ["moyenne", "priorité: moyenne"],
+              ["basse", "priorité: basse"],
+            ];
+
+            let target = null;
+            for (const [key, label] of map) {
+              if (choice.startsWith(key)) { target = label; break; }
+            }
+            if (!target) {
+              core.info(`Priorité non reconnue : "${choice}"`);
+              return;
+            }
+
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.issue.number;
+
+            // Retire un éventuel autre label de priorité (cas d'une édition).
+            const existing = await github.rest.issues.listLabelsOnIssue({ owner, repo, issue_number });
+            for (const l of existing.data) {
+              if (l.name.startsWith("priorité: ") && l.name !== target) {
+                try {
+                  await github.rest.issues.removeLabel({ owner, repo, issue_number, name: l.name });
+                } catch (e) {
+                  core.info(`Impossible de retirer ${l.name} : ${e.message}`);
+                }
+              }
+            }
+
+            await github.rest.issues.addLabels({ owner, repo, issue_number, labels: [target] });
+            core.info(`Label appliqué : ${target}`);

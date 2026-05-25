@@ -118,6 +118,18 @@ body:
     validations:
       required: true
 
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priorité
+      description: "Selon vous, à quel point ce bug doit-il être corrigé rapidement ? (l'urgence de correction, distincte de la gravité)"
+      options:
+        - Critique — à traiter immédiatement (bloquant ou faille majeure)
+        - Haute — à traiter en priorité
+        - Moyenne — importance normale
+        - Basse — peut attendre
+        - Très basse — optionnel, à traiter quand possible
+
   - type: textarea
     id: media
     attributes:
